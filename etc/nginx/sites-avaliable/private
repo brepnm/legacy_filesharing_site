@@ -1,0 +1,32 @@
+server {
+    listen 80;
+    server_name 111.11.11.11; // Server IP address!
+
+    client_max_body_size 0;
+    root /var/www/private;
+    index index.php;
+
+    # 🔹 СТАТИЧЕСКИЕ ФАЙЛЫ (ВАЖНО!)
+    location /uploads/ {
+        alias /var/www/private/uploads/;
+        autoindex off;
+        types { }
+        default_type application/octet-stream;
+    }
+
+    # 🔹 PHP
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+    }
+
+    # 🔹 ВСЁ ОСТАЛЬНОЕ
+    location / {
+        try_files $uri $uri/ /index.php;
+    }
+
+    location ~ /\. {
+        deny all;
+    }
+}
+
