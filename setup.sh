@@ -13,8 +13,9 @@ sudo chmod 755 /var/www/private/uploads
 sudo php var/www/private/init.php
 
 
-sudo chown root:root /etc/private-site/config.php
-sudo chmod 600 /etc/private-site/config.php
+sudo chown root:www-data /etc/private-site/config.php
+sudo chmod 640 /etc/private-site/config.php
+
 
 
 # to get php version
@@ -23,8 +24,8 @@ ls /run/php/
 # remove file size upload limit
 sudo nvim /etc/php/8.3/fpm/php.ini
 # change these values
-upload_max_filesize = 5G
-post_max_size = 5G
+upload_max_filesize = 
+post_max_size = 
 
 
 # enable and start site
