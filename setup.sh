@@ -3,16 +3,14 @@ sudo apt update
 sudo apt install nginx
 sudo apt install php php-fpm
 
+sudo php var/www/private/init.php
+
+
 # give permissions
 sudo chown -R www-data:www-data /var/www/private
 sudo chmod -R 755 /var/www/private
 sudo chown -R www-data:www-data /var/www/private/uploads
 sudo chmod 755 /var/www/private/uploads
-
-# create config file
-sudo php var/www/private/init.php
-
-
 sudo chown root:www-data /etc/private-site/config.php
 sudo chmod 640 /etc/private-site/config.php
 
