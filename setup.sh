@@ -19,13 +19,19 @@ sudo ln -s /etc/nginx/sites-available/private /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl reload nginx
 
+# remove file size upload limit
+sudo nvim /etc/php/8.3/fpm/php.ini
+
+# change these values
+upload_max_filesize = 5G
+post_max_size = 5G
+
+sudo systemctl restart php8.3-fpm
+
+
 
 # debug
 sudo tail -n 50 /var/log/nginx/error.log
-
-
-php -r "echo password_hash('password', PASSWORD_DEFAULT);" # change 'password' to your desired password
-php -r "echo bin2hex(random_bytes(32));"
 
 
 
