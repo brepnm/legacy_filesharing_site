@@ -1,34 +1,58 @@
 <?php
+// ---- CLI only ----
 if (php_sapi_name() !== 'cli') {
     http_response_code(403);
-    exit('CLI only');
+    exit("CLI only\n");
 }
 
-$path = '/etc/private-site/config.php';
+$dir  = '/etc/private-site';
+$file = $dir . '/config.php';
 
-if (file_exists($path)) {
-    echo "Config already exists\n";
+// ---- create directory if needed ----
+if (!is_dir($dir)) {
+    mkdir($dir, 0750, true);
+    chown($dir, 0);              // root
+    chgrp($dir, 'www-data');
+}
+
+// ---- prevent overwrite ----
+if (file_exists($file)) {
+    echo "Config already exists: $file\n";
     exit(1);
 }
 
+// ---- read password ----
 echo "Enter password: ";
 system('stty -echo');
 $password = trim(fgets(STDIN));
 system('stty echo');
 echo "\n";
 
+if ($password === '') {
+    echo "Password cannot be empty\n";
+    exit(1);
+}
+
+// ---- generate secrets ----
 $hash  = password_hash($password, PASSWORD_DEFAULT);
 $token = bin2hex(random_bytes(32));
 
-$config = "<?php\nreturn [\n"
-        . "    'password_hash' => '$hash',\n"
-        . "    'auth_token'    => '$token',\n"
-        . "];\n";
+// ---- write config ----
+$config = <<<PHP
+<?php
+return [
+    'password_hash' => '$hash',
+    'auth_token'    => '$token',
+];
 
-file_put_contents($path, $config);
+PHP;
 
-chmod($path, 0640);
-chown($path, 0);           // root
-chgrp($path, 'www-data');
+file_put_contents($file, $config);
 
-echo "Config created: $path\n";
+// ---- permissions ----
+chmod($file, 0640);
+chown($file, 0);          // root
+chgrp($file, 'www-data');
+
+echo "Private site initialized.\n";
+echo "Config created at: $file\n";
