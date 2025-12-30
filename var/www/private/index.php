@@ -174,7 +174,7 @@ function short_text($text, $limit = 50) {
 
 <hr>
 
-<a href="upload.php">Upload</a>
+<input type="button" value="Upload" onclick="location='upload.php'" />
 <a href="logout.php">Exit</a>
 
   
