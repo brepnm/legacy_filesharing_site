@@ -174,9 +174,16 @@ function short_text($text, $limit = 50) {
 
 <hr>
 
+<br>
+<br>
+<br>
+
 <a href="upload.php">Upload</a>
+
 <br>
 <br>
+<br>
+
 <a href="logout.php">Exit</a>
 
   
