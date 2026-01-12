@@ -13,6 +13,7 @@ sudo chown -R www-data:www-data /var/www/private/uploads
 sudo chmod 755 /var/www/private/uploads
 sudo chown root:www-data /etc/private-site/config.php
 sudo chmod 640 /etc/private-site/config.php
+sudo chmod +x /usr/bin/yt-dlp
 
 
 
